@@ -23,3 +23,21 @@ export async function fetchExercises() {
     throw error;
   }
 }
+
+export const saveWorkoutToFirestore = async (workout) => {
+  try {
+    const docRef = await addDoc(collection(db, "workouts1"), workout);
+    console.log("Workout saved with ID:", docRef.id);
+  } catch (error) {
+    console.error("Error saving workout:", error);
+  }
+};
+
+export const fetchWorkouts = async () => {
+  const querySnapshot = await getDocs(collection(db, "workouts1"));
+  const workouts = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return workouts;
+};
